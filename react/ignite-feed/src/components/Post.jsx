@@ -11,15 +11,20 @@ export function Post({ author, content, publishedAt }) {
 
   const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", { locale: ptBR })
   const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, { locale: ptBR, addSuffix: true })
-
+  const isNewCommentTextEmpty = newCommentText.length === 0;
   function handleCreateNewComment(event) {
     event.preventDefault()
     setComments([...comments, newCommentText])
     setNewCommentText('')
   }
 
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event) {
+    event.target.setCustomValidity('');
     setNewCommentText(event.target.value);
+  }
+
+  function handleNewCommentInvalid(event) {
+    event.target.setCustomValidity('O comentário não pode ser vazio');
   }
 
   function deleteComment(commentToDelete) {
@@ -59,9 +64,16 @@ export function Post({ author, content, publishedAt }) {
           placeholder='Deixe um comentário'
           value={newCommentText}
           onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
         <footer>
-          <button type='submit'>Publicar</button>
+          <button
+            type='submit'
+            disabled={isNewCommentTextEmpty}
+          >
+            Publicar
+          </button>
         </footer>
       </form>
 
