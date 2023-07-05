@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 interface AvatarProps {
   hasBorder?: boolean;
   src: string;
+  alt?: string;
 }
 
 export function Avatar({ hasBorder = true, src }: AvatarProps) {
